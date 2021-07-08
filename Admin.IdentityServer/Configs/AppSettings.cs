@@ -1,5 +1,4 @@
-﻿
-using FreeSql;
+﻿using FreeSql;
 
 namespace Admin.IdentityServer.Configs
 {
@@ -31,6 +30,11 @@ namespace Admin.IdentityServer.Configs
         public bool Health { get; set; } = false;
 
         /// <summary>
+        /// 租户类型
+        /// </summary>
+        public bool Tenant { get; set; }
+
+        /// <summary>
         /// 数据库
         /// </summary>
         public Db Db { get; set; } = new Db();
@@ -50,7 +54,7 @@ namespace Admin.IdentityServer.Configs
         /// 地址
         /// </summary>
         public string Path { get; set; }
-        
+
         /// <summary>
         /// 密码
         /// </summary>

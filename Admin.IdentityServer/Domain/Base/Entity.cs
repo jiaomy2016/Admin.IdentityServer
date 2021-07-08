@@ -13,12 +13,11 @@ namespace Admin.IdentityServer.Domain
         /// 编号
         /// </summary>
         [Description("编号")]
-        [Column(Position = 1, IsIdentity = true)]
+        [Column(Position = 1)]
         public virtual TKey Id { get; set; }
     }
 
     public class Entity : Entity<long>
     {
-
     }
 }

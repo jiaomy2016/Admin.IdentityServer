@@ -1,6 +1,4 @@
-﻿@import "bootstrap.less";
-
-html, body {
+﻿html, body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -11,6 +9,36 @@ html, body {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.clearfix:before, .clearfix:after, .row:before, .row:after {
+    display: table;
+    content: " ";
+    clear: both;
+}
+
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-sm-6 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-6 {
+    width: 50%;
+    float: left;
+}
+
+@media screen and (min-width: 768px) {
+    .col-sm-6 {
+        width: 50%;
+        float: left;
+    }
 }
 
 input:-webkit-autofill {
@@ -57,14 +85,14 @@ body.is4 {
         a {
             color: #fff;
             font-size: 16px;
-            text-decoration:none;
+            text-decoration: none;
         }
     }
 }
 
 .login-body {
     width: 750px;
-    margin: 5% auto 0;
+    margin: 5% auto;
 
     .main-title {
         font-size: 32px;
@@ -82,7 +110,7 @@ body.is4 {
     }
 
     form {
-        position:relative;
+        position: relative;
         padding: 40px 25px 15px 25px;
         background-color: #fff;
     }
@@ -232,13 +260,16 @@ body.is4 {
         margin-top: 20px;
     }
 }
+
 @media screen and (max-width:460px) {
     .header {
         text-align: center;
-        .list{
-            display:none;
+
+        .list {
+            display: none;
         }
     }
+
     .login-body {
         margin: 0px;
         padding: 0px;
@@ -248,6 +279,7 @@ body.is4 {
             margin-bottom: 15px;
         }
     }
+
     .login-footer {
         margin-top: 0px;
     }
@@ -259,15 +291,50 @@ body.is4 {
     margin: 0;
     box-sizing: border-box;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     background-color: #fff;
     overflow: hidden;
     align-items: center;
     font-size: 14px;
     display: none;
 }
+
 .my-alert--error.is-light {
     background-color: #fef0f0;
     color: #f56c6c;
+}
+
+.my-radio-group {
+    font-size: 14px;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+
+    .my-radio-button__inner {
+        cursor: pointer;
+        padding: 10px 20px;
+        background-color: #fff;
+        border: 1px solid #dcdfe6;
+        border-radius: 4px 0 0 4px;
+        border-left: 0;
+
+        &.active {
+            color: #fff;
+            background-color: #409eff;
+            border-color: #409eff;
+            box-shadow: -1px 0 0 0 #409eff;
+        }
+
+        &:first-child {
+            border-left: 1px solid #dcdfe6;
+            border-radius: 4px 0 0 4px;
+            box-shadow: none !important;
+        }
+
+        &:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+    }
 }

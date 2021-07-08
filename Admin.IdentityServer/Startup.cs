@@ -1,21 +1,22 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+﻿using Admin.IdentityServer.Account;
+using Admin.IdentityServer.Configs;
+using Admin.IdentityServer.Utils;
+using HealthChecks.UI.Client;
+using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using IdentityServer4.Configuration;
-using HealthChecks.UI.Client;
-using Admin.IdentityServer.Configs;
-using Admin.IdentityServer.Account;
-using Admin.IdentityServer.Utils;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
+using Yitter.IdGenerator;
 
 namespace Admin.IdentityServer
 {
@@ -36,9 +37,31 @@ namespace Admin.IdentityServer
             //界面即时编译，Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
             //services.AddRazorPages().AddRazorRuntimeCompilation();
 
+            //雪花漂移算法
+            YitIdHelper.SetIdGenerator(new IdGeneratorOptions(1) { WorkerIdBitLength = 6 });
+
             services.AddSingleton(_appSettings);
             services.AddSingleton(new IPHelper());
             services.AddDb(_appSettings);
+
+            #region Cors 跨域
+
+            if (_appSettings.CorUrls?.Length > 0)
+            {
+                services.AddCors(options =>
+                {
+                    options.AddPolicy("Limit", policy =>
+                    {
+                        policy
+                        .WithOrigins(_appSettings.CorUrls)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                    });
+                });
+            }
+
+            #endregion Cors 跨域
 
             var builder = services.AddIdentityServer(options =>
                 {
@@ -66,20 +89,6 @@ namespace Admin.IdentityServer
                     _appSettings.Certificate.Password)
                 );
             }
-
-            #region Cors 跨域
-            services.AddCors(options =>
-            {
-                options.AddPolicy("Limit", policy =>
-                {
-                    policy
-                    .WithOrigins(_appSettings.CorUrls)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-                });
-            });
-            #endregion
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -163,8 +172,8 @@ namespace Admin.IdentityServer
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseCookiePolicy();
             app.UseCors("Limit");
+            app.UseCookiePolicy();
             app.UseSession();
             app.UseStaticFiles();
             app.UseRouting();

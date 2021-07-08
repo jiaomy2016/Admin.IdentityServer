@@ -25,7 +25,6 @@ function validate() {
         return false;
     }
     return true;
-    
 }
 //用户名检查
 $("#userName").blur(function () {
@@ -49,7 +48,7 @@ $("#btnLogin").click(function () {
     if (!isValid) {
         return false;
     }
-    
+
     const $me = $(this);
     $me.prop('disabled', true).addClass('is-disabled').text('登录中...');
     const input = getInput();
@@ -62,7 +61,6 @@ $("#btnLogin").click(function () {
         if (res.code === 1) {
             const returnUrl = $.trim($("#returnUrl").val());
             if (returnUrl) {
-                
                 window.location.href = returnUrl;
             }
         } else {
@@ -88,4 +86,25 @@ $("#btnLogin").click(function () {
     });
 
     return false;
+});
+
+var userDefaults = {
+    plat: {
+        userName: 'user',
+        password: '111111'
+    },
+    tenant: {
+        userName: '18988889999',
+        password: '111111'
+    }
+};
+$(".my-radio-group .my-radio-button__inner").click(function () {
+    $(".my-radio-group .my-radio-button__inner.active").removeClass('active');
+    $(this).addClass("active");
+    var userType = $(this).data("value");
+    var user = userDefaults[userType];
+    if (user) {
+        $("#userName").val(user.userName);
+        $("#password").val(user.password);
+    }
 });
